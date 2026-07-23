@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PART: Learning 3D Part Assembly and Retrieval with Transformers</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/favicon.svg">
+
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+  <script defer src="./static/js/results.js"></script>
+</head>
+
+<body>
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">PART: Learning 3D Part Assembly and Retrieval with Transformers</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              Ruchao Bao<sup>1</sup>,</span>
+            <span class="author-block">
+              Wenzheng Wu<sup>1</sup>,</span>
+            <span class="author-block">
+              <a href="https://xccelephant.github.io/">Chucheng Xiang</a><sup>1</sup>,</span>
+            <span class="author-block">
+              <a href="https://digiartomnis.github.io/index.html">Zhongyuan Liu</a><sup>2</sup>,</span>
+            <span class="author-block">
+              <a href="https://liuyuan-pal.github.io/">Yuan Liu</a><sup>3</sup>,</span>
+            <span class="author-block">
+              Jinxin Dong<sup>2</sup>,</span>
+            <span class="author-block">
+              <a href="http://staff.ustc.edu.cn/~lgliu/">Ligang Liu</a><sup>1</sup>,</span>
+            <span class="author-block">
+              <a href="https://kiki007.github.io/">Ziqi Wang</a><sup>3*</sup>
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>USTC</span>&emsp;&emsp;
+            <span class="author-block"><sup>2</sup>Tencent</span>&emsp;&emsp;
+            <span class="author-block"><sup>3</sup>HKUST</span>
+          </div>
+
+          <div class="is-size-5 publication-authors" style="margin-top: 1rem;">
+            <b>SIGGRAPH Asia 2026</b>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a class="external-link button is-normal is-rounded is-dark is-disabled" disabled
+                   style="pointer-events: none; opacity: 0.6; cursor: not-allowed;">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper (Coming Soon)</span>
+                </a>
+              </span>
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a class="external-link button is-normal is-rounded is-dark is-disabled" disabled
+                   style="pointer-events: none; opacity: 0.6; cursor: not-allowed;">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code (Coming Soon)</span>
+                  </a>
+              </span>
+              <!-- Dataset Link. -->
+              <span class="link-block">
+                <a class="external-link button is-normal is-rounded is-dark is-disabled" disabled
+                   style="pointer-events: none; opacity: 0.6; cursor: not-allowed;">
+                  <span class="icon">
+                      🤗
+                  </span>
+                  <span>Data (Coming Soon)</span>
+                  </a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <img id="teaser" src="./static/images/teaser.jpg" alt="PART teaser results.">
+      <h2 class="subtitle is-size-5 has-text-left">
+        Results of our PART framework. Given a monolithic target shape (left, visualized as a mesh and
+        represented as a point cloud for model input), PART retrieves appropriate components from a
+        candidate part library (middle) and reconstructs the target as a part assembly by predicting
+        the 6-DoF pose of each selected component (right).
+      </h2>
+    </div>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            3D assembly is fundamental to modern manufacturing and digital content
+            creation. In this paper, we present PART, a unified transformer-based framework
+            for 3D part retrieval and assembly: given a target shape and a part
+            library, PART automatically selects the appropriate parts and predicts their
+            6-DoF poses to reconstruct the target. While prior work has achieved impressive
+            progress on assembling a pre-defined set of parts, this more practical
+            retrieval-based setting remains largely unexplored. The task faces three key
+            challenges: (i) a combinatorially explosive search space that grows exponentially
+            with library size; (ii) variable-length outputs, as different targets
+            require different numbers of parts; and (iii) continuous 6-DoF pose estimation
+            for part assembly. To address these, we formulate retrieval and assembly
+            as a set prediction problem and design a novel transformer-based framework
+            that retrieves parts and regresses their poses with variable-length output.
+            Additionally, we exploit the duality between part pose estimation and target
+            segmentation through joint training and a novel segmentation-enhanced
+            optimization module. Finally, we curate a large-scale dataset of 80K+ shapes,
+            and the results show that PART generalizes to scene layouts, image targets,
+            and real-world scans. Code and data will be released.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+
+    <!-- Pipeline. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Pipeline</h2>
+        <img src="./static/images/pipeline.jpg" alt="PART pipeline overview.">
+        <h2 class="subtitle is-size-6 has-text-left" style="margin-top: 1.5rem;">
+          <b>Overview of our framework.</b> Given a target point cloud and a set of candidate parts, we
+          employ Point Transformer v3 layers followed by self- and cross-attention mechanisms to extract
+          point-wise features $f^\mathcal{P}$ and part global features $f^\mathcal{C}$. These
+          representations serve as conditions for the Transformer decoder layers, where a set of
+          learnable instance queries interacts with the encoded features. The decoded instance features
+          are then fed into parallel prediction heads to determine part assignments (classifying into
+          candidate indices or empty class), estimate 6-DoF assembly poses, and generate segmentation
+          masks. Finally, a segmentation-enhanced optimization module refines the assembly configuration
+          to yield the precise result.
+        </h2>
+      </div>
+    </div>
+    <!--/ Pipeline. -->
+  </div>
+</section>
+
+
+<section class="section" id="Results">
+  <div class="container is-max-desktop">
+    <div class="has-text-centered">
+      <h2 class="title is-3 results-heading">Results</h2>
+    </div>
+    <div class="results-grid" id="results-grid"></div>
+  </div>
+</section>
+
+
+<!-- <section class="section" id="Acknowledgements">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Acknowledgements</h2>
+        <div class="content has-text-justified">
+          <p>
+            TODO: Acknowledgements placeholder. We thank [names] for [helpful discussions / feedback on
+            the draft / technical support]. This work was supported in part by [funding source / grant
+            number].
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section> -->
+
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>
+      <p class="has-text-centered">BibTeX (Coming Soon)</p>
+    </code></pre>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content has-text-centered">
+          <p>
+            The template is borrowed from <a href="https://nerfies.github.io/">Nerfies</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
